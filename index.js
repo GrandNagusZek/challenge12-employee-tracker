@@ -172,3 +172,21 @@ function viewAllDepartments() {
         menu()
     })
 }
+
+function addDepartment() {
+            inquirer.prompt([{
+                type: "input",
+                message: "Name of new department?",
+                name: "name"
+            },
+            ])
+                .then(response => {
+
+                    db.query(`insert into department(name)values ("${response.name}")`, (err) => {
+
+                        viewAllDepartments()
+                    })
+
+                })
+
+        }
