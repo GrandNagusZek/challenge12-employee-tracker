@@ -27,3 +27,4 @@ VALUES('Sales'),
 
 
       UPDATE employee set manager_id=1 where id=2;
+     

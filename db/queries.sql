@@ -10,7 +10,7 @@ ON role.department_id=department.id;
 
 SELECT employee.id as id, employee.first_name, employee.last_name, title,
     name as department, salary,
-    CONTACT(managerTable.first_name, ' ',managerTable.last_name) as manager
+    CONCAT(managerTable.first_name, ' ',managerTable.last_name) as manager
     FROM employee
     LEFT JOIN role ON employee.role_id = role.id
     LEFT JOIN department ON role.department_id=department.id
@@ -19,4 +19,3 @@ SELECT employee.id as id, employee.first_name, employee.last_name, title,
 
     SELECT * FROM employee;
 
-    
