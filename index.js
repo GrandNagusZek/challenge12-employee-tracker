@@ -93,7 +93,7 @@ function updateEmployee() {
 
 
 function addEmployee() {
-
+    console.log("inside add employee")
     db.query(`SELECT id as value, title as name from role`, (err, roleData) => {
 
         db.query(`SELECT is as value, CONCAT(first_name,' ', last_name) as name from employee where manager_id is null`, (err, managerData) => {
@@ -190,3 +190,35 @@ function addDepartment() {
                 })
 
         }
+
+
+function addRole() {
+
+    db.query(`SELECT id as value, title as name from role`, (err, roleData) => {
+        db.query(`SELECT name as value`, (err, departmentData) => {
+        inquirer.prompt([{
+            type: "list",
+            message: "What is the title of the new role?",
+            name: "title",
+            choices: roleData
+        },
+        {
+            type: "list",
+            message: "Which department does it belong to?",
+            name: "name",
+            choices: departmentData
+        },
+        {
+            type: "input",
+            message: "How much is the salary?",
+            name: "salary"
+        }
+        ])
+        .then(response => {
+            db.query(`insert into role(title, department_id, salary)values ("${response.title}","${response.name}","${response.salary}")`, (err) => {
+                viewAllRoles()
+            })
+        })
+    })
+})
+}
