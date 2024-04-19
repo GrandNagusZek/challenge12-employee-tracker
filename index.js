@@ -174,51 +174,51 @@ function viewAllDepartments() {
 }
 
 function addDepartment() {
-            inquirer.prompt([{
-                type: "input",
-                message: "Name of new department?",
-                name: "name"
-            },
-            ])
-                .then(response => {
+    inquirer.prompt([{
+        type: "input",
+        message: "Name of new department?",
+        name: "name"
+    },
+    ])
+        .then(response => {
 
-                    db.query(`insert into department(name)values ("${response.name}")`, (err) => {
+            db.query(`insert into department(name)values ("${response.name}")`, (err) => {
 
-                        viewAllDepartments()
-                    })
+                viewAllDepartments()
+            })
 
-                })
+        })
 
-        }
+}
 
 
 function addRole() {
 
-    db.query(`SELECT id as value, title as name from role`, (err, roleData) => {
-        db.query(`SELECT name as value`, (err, departmentData) => {
+
+    db.query(`SELECT name, id as value from department`, (err, departmentData) => {
+        console.log(departmentData)
         inquirer.prompt([{
-            type: "list",
+            type: "input",
             message: "What is the title of the new role?",
-            name: "title",
-            choices: roleData
-        },
-        {
-            type: "list",
-            message: "Which department does it belong to?",
-            name: "name",
-            choices: departmentData
+            name: "title"
         },
         {
             type: "input",
             message: "How much is the salary?",
             name: "salary"
+        },
+        {
+            type: "list",
+            message: "Choose the following department name?",
+            choices: departmentData,
+            name: "department_id"
         }
         ])
-        .then(response => {
-            db.query(`insert into role(title, department_id, salary)values ("${response.title}","${response.name}","${response.salary}")`, (err) => {
-                viewAllRoles()
+            .then(response => {
+                db.query(`insert into role(title, department_id,salary)values ("${response.title}", "${response.department_id}","${response.salary}")`, (err) => {
+                    viewAllRoles()
+                })
             })
-        })
+
     })
-})
 }
